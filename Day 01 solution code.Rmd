@@ -1,0 +1,58 @@
+---
+title: "Advent of Code 2021 Day 1 Solutions"
+author: "Wendy Christensen"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# No packages
+
+```
+
+```{r}
+
+data <- read.table(file = "day1input.txt")
+colnames(data) <- c("depth")
+
+single_differences <- as.data.frame(diff(data$depth))  
+colnames(single_differences ) <- c("differences")
+
+single_differences$gt_zero[single_differences$differences > 0] <- 1
+single_differences$gt_zero[single_differences$differences <= 0] <- 0
+
+table(single_differences$gt_zero) # 1527 - correct!
+
+```
+
+```{r}
+
+nrow <- as.numeric(dim(data)[1])
+
+hold <- data.frame()
+
+n1 = 1
+n2 = 2
+n3 = 3
+
+for (i in 1:(nrow-2)) {
+
+  threeSum <- as.data.frame(data$depth[n1] + data$depth[n2] + data$depth[n3])
+  
+  hold <- rbind(hold,threeSum)
+  
+  n1 = n1+1
+  n2 = n2+1
+  n3 = n3+1
+
+}
+
+summed_differences <- as.data.frame(diff(hold[,1]))  
+colnames(summed_differences) <- c("difference")
+
+summed_differences$gt_zero[summed_differences$difference > 0] <- 1
+summed_differences$gt_zero[summed_differences$difference <= 0] <- 0
+
+table(summed_differences$gt_zero) # 1575 - Correct!
+
+```
